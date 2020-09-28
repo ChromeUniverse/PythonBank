@@ -15,7 +15,8 @@ All activity (logins, signouts, deposits, withdrawals, transfers) is logged in `
 * Withdraw money
 
 ### To-do list
-* Add transfer feature - exchanges money between two accounts
+* Add "check balance" option
+* Add transfer functionality - exchanges money between two accounts
 * Add time functionality
 * Build activity logger 
 * Change database format from `txt` to `JSON`
