@@ -15,16 +15,17 @@ All activity (new accounts, logins, signouts, deposits, withdrawals, transfers) 
 * Deposit money
 * Withdraw money
 * Trasnfer money between accounts
-* Activity logger records all actions with timestamps
+* Functional activity logger with timestamps
 
 ### To-do list
+* Add ledger
 * Change database format from `txt` to `JSON`
 * Add password hash function
-* Add custom username functionality
+* Add custom usernames
 * Get started with Django - web app coming soon!
 
 ### Changelog
 * Sept. 28 - Project creation & first commit 
 * Sept. 29 - Transfers added, activity logger implemented
 
-Made by Lucca Rodrigues - 09/2020
+Made by Lucca Rodrigues - Sept. 2020
