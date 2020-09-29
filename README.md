@@ -6,19 +6,18 @@ User data (UserID, password, account balance) is stored in a simple plaintext da
 
 Tranfers between users are recorded on `ledger.txt` with a timestamp.
 
-All activity (logins, signouts, deposits, withdrawals, transfers) is logged in `log.txt` with a timestamp.
+All activity (new accounts, logins, signouts, deposits, withdrawals, transfers) is logged in `log.txt` with a timestamp.
 
 ### Current working features
-* Create new user (Sign-up)
+* Create new account (Sign-up)
 * User login
+* Check account balance
 * Deposit money
 * Withdraw money
+* Trasnfer money between accounts
+* Activity logger records all actions with timestamps
 
 ### To-do list
-* Add "check balance" option
-* Add transfer functionality - exchanges money between two accounts
-* Add time functionality
-* Build activity logger 
 * Change database format from `txt` to `JSON`
 * Add password hash function
 * Add custom username functionality
@@ -26,5 +25,6 @@ All activity (logins, signouts, deposits, withdrawals, transfers) is logged in `
 
 ### Changelog
 * Sept. 28 - Project creation & first commit 
+* Sept. 29 - Transfers added, activity logger implemented
 
 Made by Lucca Rodrigues - 09/2020
