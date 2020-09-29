@@ -1,4 +1,5 @@
 import os
+import datetime
 
 # printing splash screen
 
@@ -17,15 +18,15 @@ logPath = 'C:\\Users\\omnic\\Documents\\Programming\\banking_py\\log.txt'
 
 # opening database and storing contents
 dbFile = open(dbPath)
-dbContent = dbFile.readlines()
-userCount = len(dbContent)-1
+# Getting number of registered users
+userCount = len(dbFile.readlines())-1
 dbFile.close()
 
 # implementing a User object
 
 class User(object):
     #initializing a User object
-    def __init__(self, id, password, balance=' 0.00'):
+    def __init__(self, id, password=None, balance=' 0.00'):
         # NOTE: id, password and balance are all STRINGS
         self.id = id
         self.password = password
@@ -46,44 +47,41 @@ class User(object):
         dbFile = open(dbPath)
         dbContent = dbFile.readlines()
         dbFile.close()
-        # User's entry in database
+        # accessing user's entry in database
         userEntry = dbContent[id_num]
-        balance_float = float(userEntry[16:21])
-        self.balance = balance_float
-        return self.balance
+        # Updating the User object's 'balance' data attribute
+        self.balance = float(userEntry[16:21])
+        # Return formatted string
+        return "{:5.2f}".format(self.balance)
 
     # updating database with new balance
     def set_balance(self, new_balance):
+        # Updating the User object's 'balance' data attribute
+        self.balance = str(new_balance)
         id_num = int(self.id)
 
         # opening database and spliting it into lines
         dbFile = open(dbPath)
         dbLines = dbFile.readlines()
-        print(dbLines)
         dbFile.close()
 
         # accessing User's entry in database
         userEntry = dbLines[id_num]
-        print(userEntry)
 
         # modifying "funds" section in database
         userEntryList = list(userEntry)
-        print(userEntryList)
         # too lazy for loops :-P
         userEntryList[16] = list("{:5.2f}".format(new_balance))[0]
         userEntryList[17] = list("{:5.2f}".format(new_balance))[1]
         userEntryList[18] = list("{:5.2f}".format(new_balance))[2]
         userEntryList[19] = list("{:5.2f}".format(new_balance))[3]
         userEntryList[20] = list("{:5.2f}".format(new_balance))[4]
-        print(userEntryList)
 
         # updating database with new User Entry
         userEntry = ''.join(userEntryList)
         dbLines[id_num] = userEntry
         # rejoining database
-        print(dbLines[id_num])
         dbNew = ''.join(dbLines)
-        print(dbNew)
 
         # updating the *actual* database.txt file
         dbFile = open(dbPath, 'w')
@@ -107,52 +105,106 @@ class User(object):
         dbPassword = userEntry[6:12]
 
         if dbPassword == inputPassword:
+            # update log
+            self.update_log('login')
             return True
         else:
             return False
 
+    def signout(self):
+        self.update_log('signout')
+
     # Adding money to balance
     def deposit(self, amount):
-        current_balance = float(self.balance)
+        current_balance = float(self.get_balance())
         new_balance = current_balance + float(amount)
-        self.balance = str(new_balance)
-        # update database
-        print(self.balance)
         self.set_balance(new_balance)
         # update log
-        print()
+        self.update_log('deposit')
 
     # Withdraw money from account
     def withdraw(self, amount):
-        current_balance = float(self.balance)
+        current_balance = float(self.get_balance())
         new_balance = current_balance - float(amount)
-        self.balance = str(new_balance)
-        # update database
-        print(self.balance)
         self.set_balance(new_balance)
         # update log
-        print()
+        self.update_log('withdraw')
 
 
     # Transfering money from one account tp another
-    def transfer(self, other, amount):
+    def transfer(self, amount, otherID):
         print()
-        # update database
+        # creating otherUser object - taking advantage of default arguments
+        otherUser = User(otherID)
+        # also useful for "initializing" balance
+        otherUser.get_balance()
+        # a transfer is just a simultaneous withdrawal and deposit
+
+        # simple arithmetic!
+        my_new_balance = float(self.get_balance()) - float(amount)
+        self.set_balance(my_new_balance)
+        other_new_balance = float(otherUser.get_balance()) + float(amount)
+        otherUser.set_balance(other_new_balance)
+
         # update log
+        self.update_log('transfer')
         # update ledger
 
+    def update_log(self, action):
+        # creating a new log entry
+        newLogEntry = ''
+        newLogEntry += "USER#"
+        # adding UserID
+        newLogEntry += self.id
+        newLogEntry += "    "
+        # adding tive of activity
+        # (10 char left padded string with space char - ' ')
+        newLogEntry += action.ljust(10,' ')
+        newLogEntry += "    "
+        # adding time (formatted as "HH-MM-SS")
+        newLogEntry += datetime.datetime.now().strftime("%H:%M:%S")
+        newLogEntry += "    "
+        # adding date (formatted as "YYYY-mm-dd")
+        newLogEntry += datetime.datetime.now().strftime("%Y-%m-%d")
+        # adding newline character
+        newLogEntry += '\n'
 
-def createUser(pass_input):
-    # creating a new User entry in the database!
-    print("Current number of users: " + str(userCount))
+        # opening log file in append mode
+        logFile = open(logPath, 'a')
+        # updating log.txt
+        logFile.write(newLogEntry)
+        logFile.close()
+
+    def update_ledger(self, amount, otherUser):
+        print()
+
+
+
+
+# creates a new User entry in the database
+def signUp(pass_input, userCount):
     userCount += 1
-    print("Updated number of users: " + str(userCount))
     # UserID for the new user
     newID = str(userCount).zfill(3)
-    # editing the database
+
+    # updating the database
     dbFile = open(dbPath, 'a')
-    dbFile.write(newID + "   " + input_pass + "    " + "00.00" + "\n")
+    dbFile.write(newID + "   " + pass_input + "    " + " 0.00" + "\n")
     dbFile.close()
+
+    # updating log.txt
+    newUser = User(newID, pass_input)
+    newUser.update_log('new_acc')
+
+    print("Thank you for opening a new account with BANK INC.")
+    print("Your UserID is: " + newID)
+    print("Your password is: " + pass_input)
+    print("Your balance is empty. Why not deposit some cash?")
+
+
+
+
+
 
 def print_menu1():
     print()
@@ -163,18 +215,66 @@ def print_menu1():
 
 def print_menu2():
     print()
+    print("Select an option:")
+    print("1 - BALANCE")
+    print("2 - DEPOSIT")
+    print("3 - WITHDRAW")
+    print("4 - TRANSFER")
+    print("5 - SIGNOUT")
+    print()
+
+def print_login():
+    print()
     print("Login selected")
     print()
 
-def print_menu3():
+def print_signup():
     print()
     print("Sign-up selected")
     print()
 
-def print_menu4():
+def print_exit():
     print()
     print("Bye-bye!")
     print()
+
+def print_balance(user):
+    print()
+    print("Balance selected.")
+    print()
+    print("Your current account balance is: " + user.get_balance())
+
+
+def print_deposit():
+    print()
+    print("Deposit selected.")
+    print()
+    print("Select an amount to deposit:")
+
+def print_withdraw():
+    print()
+    print("Withdraw selected.")
+    print()
+    print("Select an amount to withdraw:")
+
+def print_transfer():
+    print()
+    print("Transfer selected.")
+    print()
+
+def print_signout():
+    print()
+    print("Sign-out selected.")
+    print()
+
+
+
+
+
+
+
+
+
 
 # main program loop
 while True:
@@ -183,68 +283,76 @@ while True:
 
     option1  = int(input("Please select an option: "))
 
+    if option1 < 1 or option1 > 3:
+        print("Invalid input. Please try again.")
+
     if option1 == 1:
         # Login selected
-        print_menu2()
+        print_login()
 
-        id = input("Enter UserID: ")
-        password = input("Enter password: ")
+        while True:
+            id = input("Enter UserID: ")
+            password = input("Enter password: ")
+            print()
 
-        user = User(id, password)
+            user = User(id, password)
 
-        if user.authenticate() == False:
-            print("Please try again.")
-        else:
-            print("Login successful. Welcome, USER#" + user.get_id())
-
-            # Run main account loop
-
-            while True:
+            if user.authenticate() == False:
+                print("Incorrect credentials. Please try again.")
                 print()
-                print("Select an option:")
-                print("1 - DEPOSIT")
-                print("2 - WITHDRAW")
-                print("3 - TRANSFER")
-                print()
+            else:
+                print("Login successful. Welcome, USER#" + user.get_id())
+                break
 
-                option2 = int(input("Please select an option: "))
+        # Run main account loop
+        while True:
+            print_menu2()
+            option2 = int(input("Please select an option: "))
 
-                if option2 == 1:
-                    print()
-                    print("Deposit selected.")
-                    print()
-                    print("Select an amount to deposit:")
-                    amount = float(input())
-                    user.deposit(amount)
+            if option1 < 1 or option1 > 5:
+                print("Invalid input. Please try again.")
 
-                if option2 == 2:
-                    print()
-                    print("Deposit selected.")
-                    print()
-                    print("Select an amount to deposit:")
-                    amount = float(input())
-                    user.withdraw(amount)
+            if option2 == 1:
+                print_balance(user)
 
-                if option2 == 3:
-                    print()
-                    print("Transfer selected.")
+            if option2 == 2:
+                print_deposit()
+                amount = float(input())
+                user.deposit(amount)
+                print(str(amount) + " bucks were deposited successfully.")
+
+            if option2 == 3:
+                print_withdraw()
+                amount = float(input())
+                user.withdraw(amount)
+                print(str(amount) + " bucks were withdrawn successfully.")
+
+            if option2 == 4:
+                print_transfer()
+                receiverID = input("Enter ID of receiver: ")
+                print("Select an amount to transfer: ")
+                amount = float(input())
+                user.transfer(amount, receiverID)
+                print(str(amount) + " bucks were withdrawn successfully.")
+
+            if option2 == 5:
+                print_signout()
+                user.signout()
+                print("Logged out successfully.")
+                break
+
 
 
     if option1 == 2:
         # Sign-up selected
-        print_menu2()
+        print_signup()
 
         input_pass = input("Enter your password: ")
         print()
 
-        createUser(input_pass)
-
-        print("Thank you for opening a new account with BANK INC.")
-        print("Your UserID is: " + newID)
-        print("Your password is: " + input_pass)
-
+        signUp(input_pass, userCount)
 
     if option1 == 3:
         # Farewell message
-        print_menu4()
+        print_exit()
         break
