@@ -9,11 +9,11 @@ print("   Welcome to BANK INC.  ")
 print(" ////////////////////////")
 print()
 
-# PATH for database
+# PATH to database
 dbPath = 'C:\\Users\\omnic\\Documents\\Programming\\banking_py\\database.txt'
-# PATH for ledger
+# PATH to ledger
 ledgerPath = 'C:\\Users\\omnic\\Documents\\Programming\\banking_py\\ledger.txt'
-# PATH for app log
+# PATH to log
 logPath = 'C:\\Users\\omnic\\Documents\\Programming\\banking_py\\log.txt'
 
 # opening database and storing contents
