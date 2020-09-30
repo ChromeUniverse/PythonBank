@@ -12,7 +12,7 @@ print()
 # PATH for database
 dbPath = 'C:\\Users\\omnic\\Documents\\Programming\\banking_py\\database.txt'
 # PATH for ledger
-legderPath = 'C:\\Users\\omnic\\Documents\\Programming\\banking_py\\ledger.txt'
+ledgerPath = 'C:\\Users\\omnic\\Documents\\Programming\\banking_py\\ledger.txt'
 # PATH for app log
 logPath = 'C:\\Users\\omnic\\Documents\\Programming\\banking_py\\log.txt'
 
@@ -116,16 +116,20 @@ class User(object):
 
     # Adding money to balance
     def deposit(self, amount):
+        # arithmetic
         current_balance = float(self.get_balance())
         new_balance = current_balance + float(amount)
+        # updating the balance
         self.set_balance(new_balance)
         # update log
         self.update_log('deposit')
 
     # Withdraw money from account
     def withdraw(self, amount):
+        # trivial arithmetic
         current_balance = float(self.get_balance())
         new_balance = current_balance - float(amount)
+        # updating the balance
         self.set_balance(new_balance)
         # update log
         self.update_log('withdraw')
@@ -149,6 +153,7 @@ class User(object):
         # update log
         self.update_log('transfer')
         # update ledger
+        self.update_ledger(amount, otherUser)
 
     def update_log(self, action):
         # creating a new log entry
@@ -173,10 +178,37 @@ class User(object):
         logFile = open(logPath, 'a')
         # updating log.txt
         logFile.write(newLogEntry)
+        #closing log file
         logFile.close()
 
     def update_ledger(self, amount, otherUser):
-        print()
+        # creating a new ledger entry
+        newLedgerEntry = ''
+        newLedgerEntry += "USER#"
+        # sender UserID
+        newLedgerEntry += self.id
+        newLedgerEntry += "    "
+        newLedgerEntry += "USER#"
+        # receiver UserID
+        newLedgerEntry += otherUser.id
+        newLedgerEntry += "        "
+        # adding amount transferred
+        newLedgerEntry += "{:5.2f}".format(amount)
+        newLedgerEntry += "   "
+        # adding time (formatted as "HH-MM-SS")
+        newLedgerEntry += datetime.datetime.now().strftime("%H:%M:%S")
+        newLedgerEntry += "    "
+        # adding date (formatted as "YYYY-mm-dd")
+        newLedgerEntry += datetime.datetime.now().strftime("%Y-%m-%d")
+        # adding newline character
+        newLedgerEntry += '\n'
+
+        # opening ledger file in append mode
+        ledgerFile = open(ledgerPath, 'a')
+        # updating ledger.txt
+        ledgerFile.write(newLedgerEntry)
+        #closing ledger file
+        ledgerFile.close()
 
 
 
