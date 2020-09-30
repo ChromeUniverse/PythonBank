@@ -26,14 +26,14 @@ For example, `log.txt` could use a neat header like so: (check out the provided 
 ---ID---    --ACTION--    --TIME--    ---DATE---
 ```
 
-Specify the _absolute_ paths to each file in `bank.py`:  (make sure to use `\\` for Windows machines and `/` for Mac and Linux)
+Specify the _absolute_ paths to each file in `bank.py`:  (make sure to use `\\` for Windows and `/` for Mac and Linux)
 
 ```
-# PATH for database
+# PATH to database
 dbPath = 'C:\\Users\\omnic\\Documents\\Programming\\banking_py\\database.txt'
-# PATH for ledger
+# PATH to ledger
 ledgerPath = 'C:\\Users\\omnic\\Documents\\Programming\\banking_py\\ledger.txt'
-# PATH for app log
+# PATH to log
 logPath = 'C:\\Users\\omnic\\Documents\\Programming\\banking_py\\log.txt'
 ```
 
