@@ -28,7 +28,7 @@ For example, `log.txt` could use a neat header like so: (check out the provided 
 ---ID---    --ACTION--    --TIME--    ---DATE---
 ```
 
-Specify the paths to each file in `bank.py`:  (make sure to use `\\` for Windows machines and `/` for Mac and Linux)
+Specify the _absolute_ paths to each file in `bank.py`:  (make sure to use `\\` for Windows machines and `/` for Mac and Linux)
 
 ```
 # PATH for database
