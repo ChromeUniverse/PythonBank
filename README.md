@@ -18,9 +18,7 @@ Install `bank.py` on your machine. Doesn't matter where you place it, really.
 
 Create three plaintext (`.txt`) files: `database`, `ledger` and `log`. 
 
-Include a header to the first line of each file. Useful for increasing user-readability. 
-
-`bank.py` actually relies on these headers for correct operation, though, so please don't forget to include them.
+Include a header in the first line of each file. `bank.py` relies on these headers to work properly, so don't forget to include them.
 
 For example, `log.txt` could use a neat header like so: (check out the provided templates for each file for more details)
 
