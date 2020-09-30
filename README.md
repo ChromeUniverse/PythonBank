@@ -16,7 +16,7 @@ Make sure you have Python 3 installed.
 
 Install `bank.py` on your machine. Doesn't matter where you place it, really.
 
-Create three plaintext (`.txt`) files: `database.txt`, `ledger.txt` and `log.txt`. 
+Create three plaintext (`.txt`) files: `database`, `ledger` and `log`. 
 
 Include a header to the first line of each file. Useful for increasing user-readability. 
 
