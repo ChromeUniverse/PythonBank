@@ -333,7 +333,7 @@ while True:
                 print("Select an amount to transfer: ")
                 amount = float(input())
                 user.transfer(amount, receiverID)
-                print(str(amount) + " bucks were withdrawn successfully.")
+                print(str(amount) + " bucks were transferred successfully.")
 
             if option2 == 5:
                 print_signout()
