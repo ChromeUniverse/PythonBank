@@ -121,6 +121,7 @@ And that's about it. Go have some fun depositing and withdrawing money.
 ## To-do list
 * Paths to `database.txt`, `ledger.txt` and `log.txt` should be _relative_!
 * Automatically create database, ledger and log files in the same parent folder as `bank.py`, if don't already exist
+* Improve cross-platform compatibility
 * Add more flexibility for passwords - variable length, etc.
 * Add password hashing and salting
 * Add custom usernames
