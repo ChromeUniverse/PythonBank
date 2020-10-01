@@ -12,7 +12,9 @@ All activity (new accounts, logins, signouts, deposits, withdrawals, transfers) 
 
 ### Setup
 
-Make sure you have Python 3 installed.
+Make sure you have Python 3 installed beforehand. 
+
+You can clone this repo using the new GitHub CLI. But if you prefer manually copying and pasting files from this repo:
 
 Install `bank.py` on your machine. Doesn't matter where you place it, really.
 
@@ -117,10 +119,12 @@ And that's about it. Go have some fun depositing and withdrawing money.
 * Ledger - records transfers
 
 ## To-do list
-* Paths to `database.txt`, `ledger.txt` and `log.txt` should be relative!
-* Add password hash function
+* Paths to `database.txt`, `ledger.txt` and `log.txt` should be _relative_!
+* Automatically create database, ledger and log files in the same parent folder as `bank.py`, if don't already exist
+* Add more flexibility for passwords - variable length, etc.
+* Add password hashing and salting
 * Add custom usernames
-* Change database format from `.txt` to `.JSON`
+* Change database format from `.txt` to `.json` or `.csv` - or maybe even switch to SQL, why not?
 * Get started with Django - web app coming soon (maybe)!
 
 ## Changelog
