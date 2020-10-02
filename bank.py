@@ -31,7 +31,7 @@ def file_init(filename):
     file.close()
 
 
-# checking if files exist - if not, we create them
+# checking if files exist - if not, we create & init them
 def file_check(filename):
     if not os.path.exists(filename):
         file = open(filename,'w+')
@@ -245,13 +245,19 @@ class User(object):
         ledgerFile.close()
 
 
+def get_userCount():
+    dbFile = open(dbPath)
+    # Getting number of registered users
+    numUsers = len(dbFile.readlines())-1
+    dbFile.close()
+    return numUsers
 
 
 # creates a new User entry in the database
-def signUp(pass_input, userCount):
-    userCount += 1
+def signUp(pass_input, numUsers):
+    numUsers += 1
     # UserID for the new user
-    newID = str(userCount).zfill(3)
+    newID = str(numUsers).zfill(3)
 
     # updating the database
     dbFile = open(dbPath, 'a')
@@ -413,6 +419,8 @@ while True:
 
         input_pass = input("Enter your password: ")
         print()
+
+        userCount = get_userCount()
 
         signUp(input_pass, userCount)
 
