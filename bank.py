@@ -9,12 +9,50 @@ print("   Welcome to BANK INC.  ")
 print(" ////////////////////////")
 print()
 
+# initializing 'bank_files' directory and DB, ledger and log files
+
+folder_name = 'bank_files'
+
+if os.path.exists(os.path.join('.', folder_name)) == False:
+    os.makedirs(os.path.join('.', folder_name))
+
+# changes CWD to .\bank_files
+os.chdir(os.path.join('.', folder_name))
+
+# initializing files with the appropriate headers
+def file_init(filename):
+    file = open(filename, 'w+')
+    if filename == 'database.txt':
+        file.write("UID   PASWRD    FUNDS\n")
+    if filename == 'ledger.txt':
+        file.write("-SENDER-    RECEIVER    --VALUE--   --TIME--    ---DATE---\n")
+    if filename == 'log.txt':
+        file.write("---ID---    --ACTION--    --TIME--    ---DATE---\n")
+    file.close()
+
+
+# checking if files exist - if not, we create them
+def file_check(filename):
+    if not os.path.exists(filename):
+        file = open(filename,'w+')
+        file_init(filename)
+        file.close()
+    else:
+        file = open(filename, 'r')
+        content = file.read()
+        file.close()
+
+# making sure we have our files ready
+file_check('database.txt')
+file_check('ledger.txt')
+file_check('log.txt')
+
 # PATH to database
-dbPath = 'C:\\Users\\omnic\\Documents\\Programming\\banking_py\\database.txt'
+dbPath = 'database.txt'
 # PATH to ledger
-ledgerPath = 'C:\\Users\\omnic\\Documents\\Programming\\banking_py\\ledger.txt'
+ledgerPath = 'ledger.txt'
 # PATH to log
-logPath = 'C:\\Users\\omnic\\Documents\\Programming\\banking_py\\log.txt'
+logPath = 'log.txt'
 
 # opening database and storing contents
 dbFile = open(dbPath)
@@ -373,10 +411,8 @@ while True:
                 print("Logged out successfully.")
                 break
 
-
-
+    # Sign-up selected
     if option1 == 2:
-        # Sign-up selected
         print_signup()
 
         input_pass = input("Enter your password: ")
