@@ -108,6 +108,7 @@ And that's about it. Go have some fun depositing and withdrawing money.
 ## To-do list
 * Function definitions and classes/objects should be in separate files...  
 * Add function to make sure transfers are valid (valid UserID, Receiver UserID isn't the same as Sender UserID, etc.)
+* `User` object - should the default argument for `User.balance` be `' 0.01' <class 'str'>` or `0.00 <class 'float'>` ?
 * Improve cross-platform compatibility
 * Add more flexibility for passwords - variable length, etc.
 * Add password hashing and salting
