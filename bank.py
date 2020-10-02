@@ -37,10 +37,6 @@ def file_check(filename):
         file = open(filename,'w+')
         file_init(filename)
         file.close()
-    else:
-        file = open(filename, 'r')
-        content = file.read()
-        file.close()
 
 # making sure we have our files ready
 file_check('database.txt')
