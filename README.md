@@ -1,6 +1,8 @@
 # Python Bank, Inc.
 A simple web banking simulator built with Python. Complete with a database, ledger, and activity logger.
 
+This mini-project was built mostly to test out some things related to object-oriented programming and simple databases. 
+
 ## More about this program
 User data (UserID, password, account balance) is stored in a simple plaintext database: `database.txt`.
 
@@ -10,38 +12,18 @@ All activity (new accounts, logins, signouts, deposits, withdrawals, transfers) 
 
 ## Usage 
 
-_NOTE: AS OF 2020-10-01, THIS SECTION IS **DEPRECATED!** UPDATE COMING SOON!_
-
 ### Setup
 
-Make sure you have Python 3 installed beforehand. 
+Make sure you have Python 3 installed beforehand. No additional packages or modules are required.
 
-You can clone this repo using the new GitHub CLI. But if you prefer manually copying and pasting files from this repo:
+You can clone this repo using the new GitHub CLI, or just plain Git.
 
-Install `bank.py` on your machine. Doesn't matter where you place it, really.
+Run `bank.py` on your machine using your Terminal or Command Line.
 
-Create three plaintext (`.txt`) files: `database`, `ledger` and `log`. 
+On the first time you run `bank.py`, it will automatically create a new folder named `bank_file`. It's located in the script's CWD (a.k.a `./`). `bank.py` then changes its CWD to `./bank_files`.
 
-Include a header in the first line of each file. `bank.py` relies on these headers to work properly, so don't forget to include them.
+Three plaintext (`.txt`) files are automatically created and initialized in this folder: `database`, `ledger` and `log`. They're used for storing user data, recording transactions, and monitoring user activity. Open them with any text editor to see more details.
 
-For example, `log.txt` could use a neat header like so: (check out the provided templates for each file for more details)
-
-```
----ID---    --ACTION--    --TIME--    ---DATE---
-```
-
-Specify the _absolute_ paths to each file in `bank.py`:  (make sure to use `\\` for Windows and `/` for Mac and Linux)
-
-```
-# PATH to database
-dbPath = 'C:\\Users\\omnic\\Documents\\Programming\\banking_py\\database.txt'
-# PATH to ledger
-ledgerPath = 'C:\\Users\\omnic\\Documents\\Programming\\banking_py\\ledger.txt'
-# PATH to log
-logPath = 'C:\\Users\\omnic\\Documents\\Programming\\banking_py\\log.txt'
-```
-
-Now run `bank.py` on your Terminal or Command Line.
 
 ### Creating a new account
 
@@ -124,8 +106,8 @@ And that's about it. Go have some fun depositing and withdrawing money.
 * All file create/read/write operations are now cross-compatibile between OSes!
  
 ## To-do list
-* Seperate function definitions and classes/objects into separte files  
-* Add function for making sure transfers are valid (valid UserID, etc.)
+* Function definitions and classes/objects should be in separate files...  
+* Add function to make sure transfers are valid (valid UserID, Receiver UserID isn't the same as Sender UserID, etc.)
 * Improve cross-platform compatibility
 * Add more flexibility for passwords - variable length, etc.
 * Add password hashing and salting
@@ -135,12 +117,14 @@ And that's about it. Go have some fun depositing and withdrawing money.
 
 ## Changelog
 Check `bank.py` commit history and commit descriptions for more details.
-* Sept. 28 - Project creation & first commit 
-* Sept. 29 - Added transfers 
-* Sept. 29 - Added activity logger 
-* Sept. 30 - Added ledger
-* Sept. 30 - First version of "Usage" section in `README.md`
-* Oct. 01  - Added automatic file creation and initialization
+* Sep. 28 - Project creation & first commit 
+* Sep. 29 - Added transfers 
+* Sep. 29 - Added activity logger 
+* Sep. 30 - Added ledger
+* Sep. 30 - First version of "Usage" section in `README.md`
+* Oct. 01 - Added automatic file creation and initialization
+* Oct. 02 - Updated "Usage - Setup" section
+* Oct. 02 - Minor bug fixes
 
 
 Spotted any issues? Want to contibute? Open a new issue or make a pull request. 
