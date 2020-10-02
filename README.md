@@ -124,8 +124,9 @@ And that's about it. Go have some fun depositing and withdrawing money.
 * All file create/read/write operations are now cross-compatibile between OSes!
  
 ## To-do list
-* Improve cross-platform compatibility
+* Seperate function definitions and classes/objects into separte files  
 * Add function for making sure transfers are valid (valid UserID, etc.)
+* Improve cross-platform compatibility
 * Add more flexibility for passwords - variable length, etc.
 * Add password hashing and salting
 * Add custom usernames
