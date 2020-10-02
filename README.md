@@ -8,7 +8,9 @@ Tranfers between users are recorded on `ledger.txt` with a timestamp.
 
 All activity (new accounts, logins, signouts, deposits, withdrawals, transfers) is logged in `log.txt` with a timestamp.
 
-## Usage
+## Usage 
+
+_NOTE: AS OF 2020-10-01, THIS SECTION IS **DEPRECATED!** UPDATE COMING SOON!_
 
 ### Setup
 
@@ -117,10 +119,11 @@ And that's about it. Go have some fun depositing and withdrawing money.
 * Transfer money between accounts
 * Activity logger with timestamps
 * Ledger - records transfers
-
+* `bank.py` now automatically creates a folder called `bank_files` (located in the CWD) to store the extra files
+* `database.txt`, `ledger.txt` and `log.txt` are automatically created and initialized
+* All file create/read/write operations are now cross-compatibile between OSes!
+ 
 ## To-do list
-* Paths to `database.txt`, `ledger.txt` and `log.txt` should be _relative_!
-* Automatically create database, ledger and log files in the same parent folder as `bank.py`, if don't already exist
 * Improve cross-platform compatibility
 * Add function for making sure transfers are valid (valid UserID, etc.)
 * Add more flexibility for passwords - variable length, etc.
@@ -132,10 +135,13 @@ And that's about it. Go have some fun depositing and withdrawing money.
 ## Changelog
 Check `bank.py` commit history and commit descriptions for more details.
 * Sept. 28 - Project creation & first commit 
-* Sept. 29 - Added transfers and activity logger 
-* Sept. 30 - Added ledger and first version of "Usage" section in `README.md`
+* Sept. 29 - Added transfers 
+* Sept. 29 - Added activity logger 
+* Sept. 30 - Added ledger
+* Sept. 30 - First version of "Usage" section in `README.md`
+* Oct. 01  - Added automatic file creation and initialization
 
 
 Spotted any issues? Want to contibute? Open a new issue or make a pull request. 
 
-Made by Lucca Rodrigues - Sept. 2020
+Made by Lucca Rodrigues - 2020
