@@ -106,15 +106,17 @@ And that's about it. Go have some fun depositing and withdrawing money.
 * All file create/read/write operations are now cross-compatibile between OSes!
  
 ## To-do list
-* Add custom usernames
-* Make sure usernames are unique (signup fail prompt: "This username isn't available, please pick another one blah blah blah...")
+
+NOTE: entries in _italics_ will be implmeneted for the next release
+
+* _Add custom usernames_
+* _Make sure usernames are unique (signup fail prompt: "This username isn't available, please pick another one blah blah blah...")_
 * Function definitions and classes/objects should be in separate files...  
-* Add function to make sure transfers are valid (valid UserID, Receiver UserID isn't the same as Sender UserID, etc.)
-* `User` object - should the default argument for `User.balance` be `' 0.01' <class 'str'>` or `0.00 <class 'float'>` ?
-* Improve cross-platform compatibility
-* Add more flexibility for passwords - variable length, etc.
+* _Add function to make sure transfers are valid (valid UserID, Receiver UserID isn't the same as Sender UserID, etc.)_
+* _`User` object - should the default argument for `User.balance` be `' 0.01' <class 'str'>` or `0.00 <class 'float'>` ?_
+* _Add more flexibility for passwords - variable length, etc._
 * Add password hashing and salting
-* Change database format from `.txt` to `.json` or `.csv` - or maybe even switch to SQL, why not?
+* _Change database format from `.txt` to `.json` or `.csv` - or maybe even switch to SQL, why not?_
 * Get started with Django - web app coming soon (maybe)!
 
 ## Changelog
