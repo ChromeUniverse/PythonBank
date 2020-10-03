@@ -135,5 +135,3 @@ Check `bank.py` commit history and commit descriptions for more details.
 Spotted any issues? Want to contibute? Open a new issue or make a pull request. 
 
 Made by Lucca Rodrigues - 2020
-
-TEST
