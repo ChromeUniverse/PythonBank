@@ -131,7 +131,8 @@ Check `bank.py` commit history and commit descriptions for more details.
 * Oct. 02 - Updated "Usage - Setup" section
 * Oct. 02 - Minor bug fixes
 
+## License
 
-Spotted any issues? Want to contibute? Open a new issue or make a pull request. 
+Copyright (C) 2020 Lucca D. Rodrigues
 
-Made by Lucca Rodrigues - 2020
+This open-souce project is realeased under the GNU GPL V3 License. Check this repo's LICENSE for more details.
