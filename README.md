@@ -110,6 +110,7 @@ And that's about it. Go have some fun depositing and withdrawing money.
 NOTE: entries in _italics_ will be implmeneted in the next release
 
 * _Add custom usernames_
+* _Improve arithmetic accuracy with_ `decimal` _module_
 * _Make sure usernames are unique (signup fail prompt: "This username isn't available, please pick another one blah blah blah...")_
 * Function definitions and classes/objects should be in separate files...  
 * _Add function to make sure transfers are valid (valid UserID, Receiver UserID isn't the same as Sender UserID, etc.)_
