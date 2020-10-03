@@ -35,6 +35,8 @@ Check `bank.py` commit history and commit descriptions for more details.
 * Oct. 3 - Branch created, first branch commit
 
 
-Spotted any issues? Want to contibute? Open a new issue or make a pull request. 
+## License
 
-Made by Lucca Rodrigues - 2020
+Copyright (C) 2020 Lucca D. Rodrigues
+
+This open-souce project is realeased under the GNU GPL V3 License. Check this repo's LICENSE for more details.
