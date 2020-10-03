@@ -1,8 +1,8 @@
 import os
+import csv
 import datetime
 
 # printing splash screen
-
 print()
 print(" ////////////////////////")
 print("   Welcome to BANK INC.  ")
@@ -38,17 +38,17 @@ def file_check(filename):
         file_init(filename)
         file.close()
 
-# making sure we have our files ready
-file_check('database.txt')
-file_check('ledger.txt')
-file_check('log.txt')
-
 # PATH to database
-dbPath = 'database.txt'
+dbPath = 'database.csv'
 # PATH to ledger
 ledgerPath = 'ledger.txt'
 # PATH to log
 logPath = 'log.txt'
+
+# making sure we have our files ready
+file_check(dbPath)
+file_check(ledgerPath)
+file_check(logPath)
 
 # opening database and storing contents
 dbFile = open(dbPath)
@@ -60,15 +60,27 @@ dbFile.close()
 
 class User(object):
     #initializing a User object
-    def __init__(self, id, password=None, balance=' 0.00'):
+    def __init__(self, name, password=None, id='000', balance=0.0):
         # NOTE: id, password and balance are all STRINGS
-        self.id = id
+        self.name = name
         self.password = password
+        self.id = id
         self.balance = balance
 
-    # getting UserID
     def get_id(self):
-        return self.id
+        # opening database and retrieving user balance
+        dbFile = open(dbPath)
+        dbReader = csv.reader(dbFile)
+        # iterating through CSV file (linear search)
+        for row in dbReader:
+            # username found in DB!
+            if row[0] == self.name:
+                self.id = row[2]
+                dbFile.close()
+                return row[2]
+        # if we didn't find username, then user isn't registered in the DB
+        dbFile.close()
+        return False
 
     # getting password
     def get_password(self):
@@ -76,104 +88,117 @@ class User(object):
 
     # getting balance from database
     def get_balance(self):
-        id_num = int(self.id)
-        # opening database to retrieve balance
+        # opening database and retrieving user balance
         dbFile = open(dbPath)
-        dbContent = dbFile.readlines()
+        dbReader = csv.reader(dbFile)
+
+        id_num = int(self.id)
+        balance = list(dbReader)[id_num-1][3]
         dbFile.close()
-        # accessing user's entry in database
-        userEntry = dbContent[id_num]
-        # Updating the User object's 'balance' data attribute
-        self.balance = float(userEntry[16:21])
-        # Return formatted string
-        return "{:5.2f}".format(self.balance)
+        self.balance = float(balance)
+        return self.balance
 
     # updating database with new balance
     def set_balance(self, new_balance):
         # Updating the User object's 'balance' data attribute
-        self.balance = str(new_balance)
-        id_num = int(self.id)
+        self.balance = new_balance
+        id_num = self.id
 
         # opening database and spliting it into lines
         dbFile = open(dbPath)
-        dbLines = dbFile.readlines()
+        dbReader = csv.reader(dbFile)
+
+        dbCopy = []
+        print("This is the original stet of dbCopy: " + str(dbCopy))
+
+        for row in dbReader:
+            if row[2] != self.id:
+                print("row from dbReader to be appended: " + str(row))
+            if row[2] == self.id:
+                row[3] = new_balance
+                print("Found the special row! Here it is: " + str(row))
+            dbCopy.append(row)
         dbFile.close()
 
-        # accessing User's entry in database
-        userEntry = dbLines[id_num]
+        dbFile = open(dbPath, 'w', newline='')
+        dbWriter = csv.writer(dbFile)
 
-        # modifying "funds" section in database
-        userEntryList = list(userEntry)
-        # too lazy for loops :-P
-        userEntryList[16] = list("{:5.2f}".format(new_balance))[0]
-        userEntryList[17] = list("{:5.2f}".format(new_balance))[1]
-        userEntryList[18] = list("{:5.2f}".format(new_balance))[2]
-        userEntryList[19] = list("{:5.2f}".format(new_balance))[3]
-        userEntryList[20] = list("{:5.2f}".format(new_balance))[4]
+        for row in dbCopy:
+            print("row to be written: " + str(row))
+            dbWriter.writerow(row)
 
-        # updating database with new User Entry
-        userEntry = ''.join(userEntryList)
-        dbLines[id_num] = userEntry
-        # rejoining database
-        dbNew = ''.join(dbLines)
-
-        # updating the *actual* database.txt file
-        dbFile = open(dbPath, 'w')
-        dbFile.write(dbNew)
         dbFile.close()
+
 
     # authenticate user with the given credentials
     def authenticate(self):
-        id_num = int(self.id)
-        inputPassword = self.password
+        input_name = self.name
+        input_pass = self.password
 
-        # opening database and reading contents
         dbFile = open(dbPath)
-        dbContent = dbFile.readlines()
+        dbReader = csv.reader(dbFile)
+
+        if self.get_id() == False:
+            # username not found in the database
+            print('\nUser not found in DB\n')
+            return False
+
+        userEntry = list(dbReader)[int(self.id)-1]
+        db_pass = userEntry[1]
+
         dbFile.close()
 
-        if id_num > len(dbContent):
-            return False
-
-        userEntry = dbContent[id_num]
-        dbPassword = userEntry[6:12]
-
-        if dbPassword == inputPassword:
-            # update log
-            self.update_log('login')
+        if db_pass == input_pass:
+            # login successful!
+            print('\nLogin successful! Welcome, ' + self.name + '#' + self.id + '\n')
             return True
         else:
+            # incorrect credentials
+            print('\nPlease try again\n')
             return False
+
 
     def signout(self):
         self.update_log('signout')
 
     # Adding money to balance
     def deposit(self, amount):
+        if valid_amount(amount) == False:
+            # Deposit failed
+            print("Invalid input. Please try again.")
+            return False
         # arithmetic
         current_balance = float(self.get_balance())
-        new_balance = current_balance + float(amount)
+        new_balance = float(current_balance) + float(amount)
         # updating the balance
         self.set_balance(new_balance)
         # update log
-        self.update_log('deposit')
+        #self.update_log('deposit')
+        print("Deposit successful.")
+        return True
 
     # Withdraw money from account
     def withdraw(self, amount):
-        # trivial arithmetic
+        if valid_amount(amount) == False:
+            # Deposit failed
+            print("Invalid input. Please try again.")
+            return False
+        # arithmetic
         current_balance = float(self.get_balance())
         new_balance = current_balance - float(amount)
         # updating the balance
         self.set_balance(new_balance)
         # update log
-        self.update_log('withdraw')
+        #self.update_log('deposit')
+        print("Withdraw successful.")
+        return True
 
 
     # Transfering money from one account tp another
     def transfer(self, amount, otherID):
         print()
         # creating otherUser object - taking advantage of default arguments
-        otherUser = User(otherID)
+        otherUser = User(None,None,otherID)
         # also useful for "initializing" balance
         otherUser.get_balance()
         # a transfer is just a simultaneous withdrawal and deposit
@@ -190,6 +215,7 @@ class User(object):
         self.update_ledger(amount, otherUser)
 
     def update_log(self, action):
+        """
         # creating a new log entry
         newLogEntry = ''
         newLogEntry += "USER#"
@@ -214,8 +240,10 @@ class User(object):
         logFile.write(newLogEntry)
         #closing log file
         logFile.close()
+        """
 
     def update_ledger(self, amount, otherUser):
+        """
         # creating a new ledger entry
         newLedgerEntry = ''
         newLedgerEntry += "USER#"
@@ -241,38 +269,54 @@ class User(object):
         ledgerFile = open(ledgerPath, 'a')
         # updating ledger.txt
         ledgerFile.write(newLedgerEntry)
-        #closing ledger file
+        # closing ledger file
         ledgerFile.close()
+        """
 
+def valid_amount(amount):
+    if amount <= 0.0 or type(amount) != float:
+        return False
+    else:
+        return True
 
 def get_userCount():
+    numUsers = 0
     dbFile = open(dbPath)
-    # Getting number of registered users
-    numUsers = len(dbFile.readlines())-1
-    dbFile.close()
+    dbReader = csv.reader(dbFile)
+    for row in dbReader:
+        numUsers += 1
     return numUsers
 
 
 # creates a new User entry in the database
-def signUp(pass_input, numUsers):
-    numUsers += 1
-    # UserID for the new user
-    newID = str(numUsers).zfill(3)
-
-    # updating the database
-    dbFile = open(dbPath, 'a')
-    dbFile.write(newID + "   " + pass_input + "    " + " 0.00" + "\n")
+def signUp():
+    # user input
+    print('\nSignup!\n')
+    name_input = input("Enter your username: ")
+    pass_input = input("Enter your password: ")
+    # setting up new UserID
+    newID = get_userCount() + 1
+    # opening and modifying database
+    dbFile = open(dbPath, 'a', newline='')
+    dbWriter = csv.writer(dbFile)
+    dbWriter.writerow([name_input, pass_input, str(newID).zfill(3), str(0.0)])
     dbFile.close()
-
-    # updating log.txt
-    newUser = User(newID, pass_input)
-    newUser.update_log('new_acc')
+    print('\nUser created successfully!\n')
 
     print("Thank you for opening a new account with BANK INC.")
-    print("Your UserID is: " + newID)
+    print("Your UserID is: " + str(newID).zfill(3))
+    print("Your username is: " + name_input)
     print("Your password is: " + pass_input)
     print("Your balance is empty. Why not deposit some cash?")
 
+def login(name_input,pass_input):
+    # Login!
+    print('\nLogin Selected!\n')
+    username = input("Enter your username: ")
+    password = input("Enter your password: ")
+
+    input_cred = User(username, password)
+    return input_cred.authenticate()
 
 
 
@@ -309,12 +353,6 @@ def print_exit():
     print()
     print("Bye-bye!")
     print()
-
-def print_balance(user):
-    print()
-    print("Balance selected.")
-    print()
-    print("Your current account balance is: " + user.get_balance())
 
 
 def print_deposit():
@@ -362,18 +400,14 @@ while True:
         # Login selected
         print_login()
 
+        # loops until the user has logged-in
         while True:
-            id = input("Enter UserID: ")
-            password = input("Enter password: ")
-            print()
+            name_input = input("Enter your username: ")
+            pass_input = input("Enter your password: ")
 
-            user = User(id, password)
-
-            if user.authenticate() == False:
-                print("Incorrect credentials. Please try again.")
-                print()
-            else:
-                print("Login successful. Welcome, USER#" + user.get_id())
+            user = User(name_input, pass_input)
+            access = user.authenticate()
+            if access == True:
                 break
 
         # Run main account loop
@@ -384,21 +418,25 @@ while True:
             if option1 < 1 or option1 > 5:
                 print("Invalid input. Please try again.")
 
+            # Balance check selected
             if option2 == 1:
-                print_balance(user)
+                balance_string = "{:5.2f}".format(user.get_balance())
+                print("Your current account balance is: " + balance_string)
 
+            # deposit selected
             if option2 == 2:
                 print_deposit()
                 amount = float(input())
                 user.deposit(amount)
-                print(str(amount) + " bucks were deposited successfully.")
 
+            # withdraw selected
             if option2 == 3:
                 print_withdraw()
                 amount = float(input())
                 user.withdraw(amount)
                 print(str(amount) + " bucks were withdrawn successfully.")
 
+            # transfer selected
             if option2 == 4:
                 print_transfer()
                 receiverID = input("Enter ID of receiver: ")
@@ -407,6 +445,7 @@ while True:
                 user.transfer(amount, receiverID)
                 print(str(amount) + " bucks were transferred successfully.")
 
+            # signout selected
             if option2 == 5:
                 print_signout()
                 user.signout()
@@ -416,13 +455,7 @@ while True:
     # Sign-up selected
     if option1 == 2:
         print_signup()
-
-        input_pass = input("Enter your password: ")
-        print()
-
-        userCount = get_userCount()
-
-        signUp(input_pass, userCount)
+        signUp()
 
     if option1 == 3:
         # Farewell message
