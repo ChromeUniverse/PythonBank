@@ -107,7 +107,7 @@ And that's about it. Go have some fun depositing and withdrawing money.
  
 ## To-do list
 
-NOTE: entries in _italics_ will be implmeneted for the next release
+NOTE: entries in _italics_ will be implmeneted in the next release
 
 * _Add custom usernames_
 * _Make sure usernames are unique (signup fail prompt: "This username isn't available, please pick another one blah blah blah...")_
