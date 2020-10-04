@@ -23,20 +23,24 @@ Switching to CSV unlocks some cool features:
 * Transfers are recorded on `ledger.csv`
 * `bank.py` now automatically creates the `./bank_files` dir 
 * `database.csv`, `log.csv` and `ledger.csv` are automatically created and stored in `./bank_files`
+* Sign-up and login attempt limit (3 tries)
+* Validity checks during sign-up: no `' '` (blankspace) chars in username, checks if username in already registered 
+
  
 ## To-do list
 
 * Make sure all file create/read/write operations are cross-compatibile between OSes
-* Make sure usernames are unique (signup fail prompt: "This username isn't available, please pick another one blah blah blah...")
 * Function definitions and classes/objects should be in separate files...  
 * Add function to make sure transfers are valid (valid UserID, Receiver UserID isn't the same as Sender UserID, etc.)
 * Validity check functions (User IDs, passwords, useranames, deposits, withdrawals, transfers)
 
 ## Changelog
 Check `bank.py` commit history and commit descriptions for more details.
-* Oct. 3 - Branch created, first branch commit
+* Oct. 3 - Created `/CSV` branch, first branch commit
 * Oct. 4 - "Ported" database, ledger and log from `.txt` to `.csv`
 * Oct. 4 - Added automatic directory/file creation
+* Oct. 4 - Added 3-try attempt limit for sign-up and login
+* Oct. 4 - Added minor validity checks for usernames during sign-up 
 
 
 ## License
