@@ -19,10 +19,11 @@ Switching to CSV unlocks some cool features:
 * Transfer money between accounts
 * User activity is stored in `log.csv`
 * Transfers are recorded on `ledger.csv`
+* `bank.py` now automatically creates the `./bank_files` dir 
+* `database.csv`, `log.csv` and `ledger.csv` are automatically created and stored in `./bank_files`
  
 ## To-do list
 
-* Rebuild automatic folder creation and file creation/initialization
 * Make sure all file create/read/write operations are cross-compatibile between OSes
 * Make sure usernames are unique (signup fail prompt: "This username isn't available, please pick another one blah blah blah...")
 * Function definitions and classes/objects should be in separate files...  
@@ -34,6 +35,7 @@ Switching to CSV unlocks some cool features:
 Check `bank.py` commit history and commit descriptions for more details.
 * Oct. 3 - Branch created, first branch commit
 * Oct. 4 - "Ported" database, ledger and log from `.txt` to `.csv`
+* Oct. 4 - Added automatic directory/file creation
 
 
 ## License
