@@ -2,6 +2,7 @@ import os
 import csv
 import datetime
 
+
 # printing splash screen
 print()
 print(" ////////////////////////")
@@ -21,15 +22,8 @@ os.chdir(os.path.join('.', folder_name))
 
 # initializing files with the appropriate headers
 def file_init(filename):
-    file = open(filename, 'w+')
-    if filename == 'database.txt':
-        file.write("UID   PASWRD    FUNDS\n")
-    if filename == 'ledger.txt':
-        file.write("-SENDER-    RECEIVER    --VALUE--   --TIME--    ---DATE---\n")
-    if filename == 'log.txt':
-        file.write("---ID---    --ACTION--    --TIME--    ---DATE---\n")
+    file = open(filename, 'wb')
     file.close()
-
 
 # checking if files exist - if not, we create & init them
 def file_check(filename):
@@ -41,9 +35,9 @@ def file_check(filename):
 # PATH to database
 dbPath = 'database.csv'
 # PATH to ledger
-ledgerPath = 'ledger.txt'
+ledgerPath = 'ledger.csv'
 # PATH to log
-logPath = 'log.txt'
+logPath = 'log.csv'
 
 # making sure we have our files ready
 file_check(dbPath)
@@ -109,14 +103,10 @@ class User(object):
         dbReader = csv.reader(dbFile)
 
         dbCopy = []
-        print("This is the original stet of dbCopy: " + str(dbCopy))
 
         for row in dbReader:
-            if row[2] != self.id:
-                print("row from dbReader to be appended: " + str(row))
             if row[2] == self.id:
                 row[3] = new_balance
-                print("Found the special row! Here it is: " + str(row))
             dbCopy.append(row)
         dbFile.close()
 
@@ -124,7 +114,6 @@ class User(object):
         dbWriter = csv.writer(dbFile)
 
         for row in dbCopy:
-            print("row to be written: " + str(row))
             dbWriter.writerow(row)
 
         dbFile.close()
@@ -151,6 +140,7 @@ class User(object):
         if db_pass == input_pass:
             # login successful!
             print('\nLogin successful! Welcome, ' + self.name + '#' + self.id + '\n')
+            self.update_log('login')
             return True
         else:
             # incorrect credentials
@@ -173,7 +163,7 @@ class User(object):
         # updating the balance
         self.set_balance(new_balance)
         # update log
-        #self.update_log('deposit')
+        self.update_log('deposit')
         print("Deposit successful.")
         return True
 
@@ -189,7 +179,7 @@ class User(object):
         # updating the balance
         self.set_balance(new_balance)
         # update log
-        #self.update_log('deposit')
+        self.update_log('withdraw')
         print("Withdraw successful.")
         return True
 
@@ -215,63 +205,47 @@ class User(object):
         self.update_ledger(amount, otherUser)
 
     def update_log(self, action):
-        """
         # creating a new log entry
-        newLogEntry = ''
-        newLogEntry += "USER#"
-        # adding UserID
-        newLogEntry += self.id
-        newLogEntry += "    "
-        # adding tive of activity
-        # (10 char left padded string with space char - ' ')
-        newLogEntry += action.ljust(10,' ')
-        newLogEntry += "    "
+        newLogEntry = []
+        # adding userID
+        newLogEntry.append("USER#" + self.id)
+        # specifying type of activity
+        newLogEntry.append(action)
         # adding time (formatted as "HH-MM-SS")
-        newLogEntry += datetime.datetime.now().strftime("%H:%M:%S")
-        newLogEntry += "    "
+        newLogEntry.append(datetime.datetime.now().strftime("%H:%M:%S"))
         # adding date (formatted as "YYYY-mm-dd")
-        newLogEntry += datetime.datetime.now().strftime("%Y-%m-%d")
-        # adding newline character
-        newLogEntry += '\n'
+        newLogEntry.append(datetime.datetime.now().strftime("%Y-%m-%d"))
 
         # opening log file in append mode
-        logFile = open(logPath, 'a')
+        logFile = open(logPath, 'a', newline='')
+        logWriter = csv.writer(logFile)
         # updating log.txt
-        logFile.write(newLogEntry)
+        logWriter.writerow(newLogEntry)
         #closing log file
         logFile.close()
-        """
+
 
     def update_ledger(self, amount, otherUser):
-        """
         # creating a new ledger entry
-        newLedgerEntry = ''
-        newLedgerEntry += "USER#"
-        # sender UserID
-        newLedgerEntry += self.id
-        newLedgerEntry += "    "
-        newLedgerEntry += "USER#"
+        newLedgerEntry = []
+        # sender userID
+        newLedgerEntry.append("USER#" + self.id)
         # receiver UserID
-        newLedgerEntry += otherUser.id
-        newLedgerEntry += "        "
+        newLedgerEntry.append("USER#" + otherUser.id)
         # adding amount transferred
-        newLedgerEntry += "{:5.2f}".format(amount)
-        newLedgerEntry += "   "
+        newLedgerEntry.append(str(amount))
         # adding time (formatted as "HH-MM-SS")
-        newLedgerEntry += datetime.datetime.now().strftime("%H:%M:%S")
-        newLedgerEntry += "    "
+        newLedgerEntry.append(datetime.datetime.now().strftime("%H:%M:%S"))
         # adding date (formatted as "YYYY-mm-dd")
-        newLedgerEntry += datetime.datetime.now().strftime("%Y-%m-%d")
-        # adding newline character
-        newLedgerEntry += '\n'
+        newLedgerEntry.append(datetime.datetime.now().strftime("%Y-%m-%d"))
 
-        # opening ledger file in append mode
-        ledgerFile = open(ledgerPath, 'a')
-        # updating ledger.txt
-        ledgerFile.write(newLedgerEntry)
-        # closing ledger file
+        # opening log file in append mode
+        ledgerFile = open(ledgerPath, 'a', newline='')
+        ledgerWriter = csv.writer(ledgerFile)
+        # updating log.txt
+        ledgerWriter.writerow(newLedgerEntry)
+        #closing log file
         ledgerFile.close()
-        """
 
 def valid_amount(amount):
     if amount <= 0.0 or type(amount) != float:
@@ -290,24 +264,30 @@ def get_userCount():
 
 # creates a new User entry in the database
 def signUp():
+    # setting up new UserID
+    newID = get_userCount() + 1
+
     # user input
     print('\nSignup!\n')
     name_input = input("Enter your username: ")
     pass_input = input("Enter your password: ")
-    # setting up new UserID
-    newID = get_userCount() + 1
-    # opening and modifying database
+
+    user_input = User(name_input,pass_input,str(newID).zfill(3))
+
+    # updating database
     dbFile = open(dbPath, 'a', newline='')
     dbWriter = csv.writer(dbFile)
     dbWriter.writerow([name_input, pass_input, str(newID).zfill(3), str(0.0)])
     dbFile.close()
     print('\nUser created successfully!\n')
 
-    print("Thank you for opening a new account with BANK INC.")
+    user_input.update_log('new_acc')
+
+    print("\nThank you for opening a new account with BANK INC.")
     print("Your UserID is: " + str(newID).zfill(3))
     print("Your username is: " + name_input)
     print("Your password is: " + pass_input)
-    print("Your balance is empty. Why not deposit some cash?")
+    print("Your balance is empty. Why not deposit some cash?\n")
 
 def login(name_input,pass_input):
     # Login!
