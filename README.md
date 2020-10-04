@@ -1,6 +1,8 @@
 # Python Bank, Inc.
 
-The goal of this branch is to switch database, ledger and log formats to CSV files using Python's built-in `csv` module.
+The goal of this branch is to switch database, ledger and log file formats from `.txt` to `.csv` using Python's built-in `csv` module.
+
+Check the "To-Do" below for a more comprehensive list of featuers to be added in this branch.
 
 Switching to CSV unlocks some cool features:
 * Easy creation and storage of extra data attributes for `User` objects
@@ -28,7 +30,6 @@ Switching to CSV unlocks some cool features:
 * Make sure usernames are unique (signup fail prompt: "This username isn't available, please pick another one blah blah blah...")
 * Function definitions and classes/objects should be in separate files...  
 * Add function to make sure transfers are valid (valid UserID, Receiver UserID isn't the same as Sender UserID, etc.)
-* `User` object - should the default argument for `User.balance` be `' 0.01' <class 'str'>` or `0.00 <class 'float'>` ?
 * Validity check functions (User IDs, passwords, useranames, deposits, withdrawals, transfers)
 
 ## Changelog
