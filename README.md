@@ -25,13 +25,14 @@ Switching to CSV unlocks some cool features:
 * `database.csv`, `log.csv` and `ledger.csv` are automatically created and stored in `./bank_files`
 * Sign-up and login attempt limit (3 tries)
 * Validity checks during sign-up: no `' '` (blankspace) chars in username, checks if username in already taken 
+* Transferring money to yourself don't work no more lol
 
  
 ## To-do list
 
 * Make sure all file create/read/write operations are cross-compatibile between OSes
-* Function definitions and classes/objects should be in separate files...  
-* Add function to make sure transfers are valid (valid UserID, Receiver UserID isn't the same as Sender UserID, etc.)
+* Add function to make sure transfers are valid: valid UserID:
+  * make sure the sender is registered in the DB
 * Validity check functions (User IDs, passwords, useranames, deposits, withdrawals, transfers)
 
 ## Changelog
