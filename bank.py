@@ -267,12 +267,31 @@ def signUp():
     # setting up new UserID
     newID = get_userCount() + 1
 
-    # user input
-    print('\nSignup!\n')
+    # getting user input
     name_input = input("Enter your username: ")
     pass_input = input("Enter your password: ")
 
     user_input = User(name_input,pass_input,str(newID).zfill(3))
+
+
+
+    # invalid username conditions
+
+    # checking for blank usernames
+    if name_input == '' or ' ' in name_input:
+        # can't have no blank usernames floating aroung, no siree
+        print('\nNo spaces in usernames, please.')
+        return False
+
+    # checking for "UN already taken"
+    dbFile = open(dbPath)
+    dbReader = csv.reader(dbFile)
+    for row in dbReader:
+        # username already taken
+        if row[0] == name_input:
+            print('\nUsername already taken.')
+            return False
+
 
     # updating database
     dbFile = open(dbPath, 'a', newline='')
@@ -281,6 +300,7 @@ def signUp():
     dbFile.close()
     print('\nUser created successfully!\n')
 
+    # updating log
     user_input.update_log('new_acc')
 
     print("\nThank you for opening a new account with BANK INC.")
@@ -288,6 +308,9 @@ def signUp():
     print("Your username is: " + name_input)
     print("Your password is: " + pass_input)
     print("Your balance is empty. Why not deposit some cash?\n")
+
+    # signup was successful
+    return True
 
 def login(name_input,pass_input):
     # Login!
@@ -380,8 +403,10 @@ while True:
         # Login selected
         print_login()
 
+        access = False
+
         # loops until the user has logged-in
-        while True:
+        for i in range(3):
             name_input = input("Enter your username: ")
             pass_input = input("Enter your password: ")
 
@@ -389,9 +414,12 @@ while True:
             access = user.authenticate()
             if access == True:
                 break
+            if access == False and i == 2:
+                print('\nLogin attempt limit reached. Please try again.\n')
+
 
         # Run main account loop
-        while True:
+        while True and access == True:
             print_menu2()
             option2 = int(input("Please select an option: "))
 
@@ -435,7 +463,17 @@ while True:
     # Sign-up selected
     if option1 == 2:
         print_signup()
-        signUp()
+
+        # looks until SignUp is finished
+        for i in range(3):
+            signUp_done = signUp()
+            if signUp_done == False:
+                print("\nPlease try again.\n")
+                if i == 2:
+                    print("\nSign-Up attempt limit reached.\n")
+            else:
+                break
+
 
     if option1 == 3:
         # Farewell message
