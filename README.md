@@ -27,7 +27,6 @@ Switching to CSV unlocks some cool features:
 * Function definitions and classes/objects should be in separate files...  
 * Add function to make sure transfers are valid (valid UserID, Receiver UserID isn't the same as Sender UserID, etc.)
 * `User` object - should the default argument for `User.balance` be `' 0.01' <class 'str'>` or `0.00 <class 'float'>` ?
-* Add more flexibility for passwords - variable length, etc.
 * Validity check functions (User IDs, passwords, useranames, deposits, withdrawals, transfers)
 
 ## Changelog
