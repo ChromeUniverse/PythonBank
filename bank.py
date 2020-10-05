@@ -153,10 +153,12 @@ class User(object):
 
     # Adding money to balance
     def deposit(self, amount):
+
         if valid_amount(amount) == False:
             # Deposit failed
             print("Invalid input. Please try again.")
             return False
+
         # arithmetic
         current_balance = float(self.get_balance())
         new_balance = float(current_balance) + float(amount)
@@ -165,14 +167,17 @@ class User(object):
         # update log
         self.update_log('deposit')
         print("Deposit successful.")
+
         return True
 
     # Withdraw money from account
     def withdraw(self, amount):
+
         if valid_amount(amount) == False:
             # Deposit failed
             print("Invalid input. Please try again.")
             return False
+
         # arithmetic
         current_balance = float(self.get_balance())
         new_balance = current_balance - float(amount)
@@ -181,12 +186,23 @@ class User(object):
         # update log
         self.update_log('withdraw')
         print("Withdraw successful.")
+
         return True
 
 
     # Transfering money from one account tp another
     def transfer(self, amount, otherID):
-        print()
+
+        if valid_amount(amount) == False:
+            # Deposit failed
+            print("Invalid input. Please try again.")
+            return False
+
+        # transferring money to yourself?! That don't work that way, man!
+        if self.id == otherID:
+            print("You can't transfer money to yourself!")
+            return False
+
         # creating otherUser object - taking advantage of default arguments
         otherUser = User(None,None,otherID)
         # also useful for "initializing" balance
@@ -203,6 +219,15 @@ class User(object):
         self.update_log('transfer')
         # update ledger
         self.update_ledger(amount, otherUser)
+
+        print(str(amount) + " bucks were transferred successfully.")
+
+        return True
+
+
+
+	# "Just messing with files" methods
+
 
     def update_log(self, action):
         # creating a new log entry
@@ -246,6 +271,9 @@ class User(object):
         ledgerWriter.writerow(newLedgerEntry)
         #closing log file
         ledgerFile.close()
+
+
+
 
 def valid_amount(amount):
     if amount <= 0.0 or type(amount) != float:
@@ -442,7 +470,6 @@ while True:
                 print_withdraw()
                 amount = float(input())
                 user.withdraw(amount)
-                print(str(amount) + " bucks were withdrawn successfully.")
 
             # transfer selected
             if option2 == 4:
@@ -451,7 +478,6 @@ while True:
                 print("Select an amount to transfer: ")
                 amount = float(input())
                 user.transfer(amount, receiverID)
-                print(str(amount) + " bucks were transferred successfully.")
 
             # signout selected
             if option2 == 5:
