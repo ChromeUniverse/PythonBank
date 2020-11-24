@@ -3,6 +3,8 @@ A simple web banking simulator built with Python. Complete with a database, ledg
 
 This mini-project was built mostly to test out some things related to object-oriented programming and simple databases. 
 
+**NOTE** - Check CSV branch for updates!
+
 ## More about this program
 User data (UserID, password, account balance) is stored in a simple plaintext database: `database.txt`.
 
