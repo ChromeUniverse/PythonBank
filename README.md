@@ -24,7 +24,7 @@ Switching to CSV unlocks some cool features:
 * `bank.py` now automatically creates the `./bank_files` dir 
 * `database.csv`, `log.csv` and `ledger.csv` are automatically created and stored in `./bank_files`
 * Sign-up and login attempt limit (3 tries)
-* Validity checks during sign-up: no `' '` (blankspace) chars in username, checks if username in already taken 
+* Validity checks during sign-up: no `' '` (blankspace) chars in username, checks if username is already taken 
 * Transferring money to yourself don't work no more lol
 
  
