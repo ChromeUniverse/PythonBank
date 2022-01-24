@@ -1,5 +1,5 @@
 # Python Bank, Inc.
-A simple web banking simulator built with Python. Complete with a database, ledger, and activity logger.
+**Python Bank** is  simple banking app simulator built with Python, complete with a database, ledger, and activity logger.
 
 This mini-project was built mostly to test out some things related to object-oriented programming and simple databases. 
 
